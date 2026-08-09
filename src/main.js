@@ -20,6 +20,10 @@ function hydrateContent() {
   setText('[data-time]', config.time);
   setText('[data-venue-name]', config.venueName);
   setText('[data-venue-address]', config.venueAddress);
+  setText('[data-invitation]', config.invitation || '');
+  setText('[data-dress-code]', config.dressCode || '');
+  const dressCode = $('.dress-code');
+  if (dressCode) dressCode.hidden = !config.dressCode;
   setText('[data-footer-message]', config.footerMessage || '');
 
   setText('[data-attendance-yes]', config.rsvp.attendanceValues.yes.label);
@@ -189,7 +193,77 @@ function setupReveal() {
   els.forEach((el) => observer.observe(el));
 }
 
+function setupCountdown() {
+  const root = $('[data-countdown]');
+  if (!root) return;
+
+  const deadlineRaw = config.rsvp?.deadline;
+  if (!deadlineRaw) return;
+
+  const deadline = new Date(deadlineRaw);
+  if (Number.isNaN(deadline.getTime())) return;
+
+  const label = $('[data-countdown-label]', root);
+  const closed = $('[data-countdown-closed]', root);
+  const grid = $('.countdown__grid', root);
+  const form = $('#rsvp-form');
+  const daysEl = $('[data-days]', root);
+  const hoursEl = $('[data-hours]', root);
+  const minutesEl = $('[data-minutes]', root);
+  const secondsEl = $('[data-seconds]', root);
+
+  if (label && config.rsvp.deadlineLabel) {
+    label.textContent = config.rsvp.deadlineLabel;
+  }
+
+  root.hidden = false;
+
+  const pad = (n) => String(Math.max(0, n)).padStart(2, '0');
+
+  const markClosed = () => {
+    root.classList.add('countdown--closed');
+    if (grid) grid.hidden = true;
+    if (closed) closed.hidden = false;
+    if (form) {
+      form.querySelectorAll('input, button').forEach((el) => {
+        el.disabled = true;
+      });
+    }
+  };
+
+  const tick = () => {
+    const diff = deadline.getTime() - Date.now();
+    if (diff <= 0) {
+      if (daysEl) daysEl.textContent = '00';
+      if (hoursEl) hoursEl.textContent = '00';
+      if (minutesEl) minutesEl.textContent = '00';
+      if (secondsEl) secondsEl.textContent = '00';
+      markClosed();
+      return false;
+    }
+
+    const totalSeconds = Math.floor(diff / 1000);
+    const days = Math.floor(totalSeconds / 86400);
+    const hours = Math.floor((totalSeconds % 86400) / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
+    const seconds = totalSeconds % 60;
+
+    if (daysEl) daysEl.textContent = pad(days);
+    if (hoursEl) hoursEl.textContent = pad(hours);
+    if (minutesEl) minutesEl.textContent = pad(minutes);
+    if (secondsEl) secondsEl.textContent = pad(seconds);
+    return true;
+  };
+
+  if (!tick()) return;
+
+  const timer = window.setInterval(() => {
+    if (!tick()) window.clearInterval(timer);
+  }, 1000);
+}
+
 hydrateContent();
 setupWhatsApp();
 setupRsvp();
+setupCountdown();
 setupReveal();

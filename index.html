@@ -160,7 +160,51 @@
           <p class="rsvp__intro" data-rsvp-intro hidden></p>
         </div>
 
+        <aside class="dress-code reveal" aria-label="Dress code">
+          <span class="dress-code__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24">
+              <path
+                d="M12 3.5 A1.8 1.8 0 0 1 13.8 5.3 C13.8 6.3 12.9 6.8 12 7.5 L4 14.5 H20 L12 7.5"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.4"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </span>
+          <div class="dress-code__copy">
+            <p class="dress-code__label">Dress Code</p>
+            <p class="dress-code__value" data-dress-code>All White</p>
+          </div>
+        </aside>
+
         <div class="rsvp__card reveal">
+          <div class="countdown" data-countdown hidden>
+            <p class="countdown__label" data-countdown-label>Please RSVP by Tuesday, 12:00 PM</p>
+            <div class="countdown__grid" aria-live="polite">
+              <div class="countdown__unit">
+                <span class="countdown__value" data-days>0</span>
+                <span class="countdown__unit-label">Days</span>
+              </div>
+              <div class="countdown__unit">
+                <span class="countdown__value" data-hours>0</span>
+                <span class="countdown__unit-label">Hours</span>
+              </div>
+              <div class="countdown__unit">
+                <span class="countdown__value" data-minutes>0</span>
+                <span class="countdown__unit-label">Mins</span>
+              </div>
+              <div class="countdown__unit">
+                <span class="countdown__value" data-seconds>0</span>
+                <span class="countdown__unit-label">Secs</span>
+              </div>
+            </div>
+            <p class="countdown__closed" data-countdown-closed hidden>
+              The RSVP deadline has passed. Thank you for your understanding.
+            </p>
+          </div>
+
           <form class="rsvp__form" id="rsvp-form" target="hidden_iframe" novalidate>
             <fieldset class="rsvp__field">
               <legend>Will you attend?</legend>
@@ -212,6 +256,7 @@
         </span>
         <p class="footer__couple" data-couple></p>
         <p class="footer__message" data-footer-message></p>
+        <p class="footer__invitation" data-invitation>Strictly by Invitation</p>
       </footer>
     </main>
 

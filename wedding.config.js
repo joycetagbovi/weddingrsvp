@@ -31,6 +31,10 @@ export default {
   googleMapsUrl:
     'https://www.google.com/maps/dir/?api=1&destination=Rose+Villa&destination_place_id=/g/11fnsvkcfm',
 
+  // --- Guest notes ---
+  invitation: 'Strictly by Invitation',
+  dressCode: 'All White',
+
   // --- WhatsApp (optional) ---
   // Full international number, digits only (e.g. '15551234567').
   // Leave as an empty string to hide the WhatsApp button entirely.
@@ -41,6 +45,10 @@ export default {
   rsvp: {
     // Short line shown under the RSVP heading. Set to '' to hide it.
     intro: '',
+    // RSVP deadline (local time). Set to '' to hide the countdown.
+    // Format: YYYY-MM-DDTHH:mm:ss — Tuesday midday.
+    deadline: '2026-08-11T12:00:00',
+    deadlineLabel: 'Please RSVP by Tuesday, 12:00 PM',
     // Ends in /formResponse (NOT /viewform).
     formActionUrl:
       'https://docs.google.com/forms/d/e/1FAIpQLSdS5wpuOmCKsQznnTLcLWut9vC7QlEfeC8dMo0sovNhAOxcbA/formResponse',

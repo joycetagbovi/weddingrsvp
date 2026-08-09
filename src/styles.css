@@ -597,6 +597,140 @@ svg {
   line-height: 1.65;
 }
 
+.dress-code {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  max-width: min(22rem, 100%);
+  margin: 0 auto 1.75rem;
+  padding: 1.15rem 1.5rem;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(251, 246, 240, 0.96)),
+    var(--surface);
+  border: 1px solid rgba(176, 137, 90, 0.35);
+  border-radius: 999px;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.7) inset,
+    var(--shadow-sm);
+  text-align: left;
+}
+
+.dress-code__icon {
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  width: 2.6rem;
+  height: 2.6rem;
+  border-radius: 50%;
+  color: var(--burgundy);
+  background: var(--blush);
+  border: 1px solid rgba(176, 137, 90, 0.28);
+}
+
+.dress-code__icon svg {
+  width: 1.3rem;
+  height: 1.3rem;
+}
+
+.dress-code__copy {
+  min-width: 0;
+}
+
+.dress-code__label {
+  margin: 0 0 0.15rem;
+  font-size: 0.68rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--gold);
+  padding-left: 0.28em;
+}
+
+.dress-code__value {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.35rem, 4.5vw, 1.65rem);
+  font-weight: 500;
+  line-height: 1.15;
+  letter-spacing: 0.02em;
+  color: var(--ink);
+}
+
+@media (max-width: 22rem) {
+  .dress-code {
+    gap: 0.75rem;
+    padding: 1rem 1.15rem;
+    border-radius: var(--radius-lg);
+  }
+}
+
+.countdown {
+  margin: 0 0 1.75rem;
+  padding: 0 0 1.35rem;
+  text-align: center;
+  border-bottom: 1px solid var(--line);
+}
+
+.countdown__label {
+  margin: 0 0 0.9rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--gold);
+  padding-left: 0.22em;
+}
+
+.countdown__grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.55rem;
+}
+
+.countdown__unit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.75rem 0.35rem;
+  background: var(--cream);
+  border: 1px solid rgba(176, 137, 90, 0.22);
+  border-radius: var(--radius-sm);
+}
+
+.countdown__value {
+  font-family: var(--font-display);
+  font-size: clamp(1.55rem, 6vw, 2rem);
+  font-weight: 500;
+  line-height: 1;
+  color: var(--burgundy);
+  font-variant-numeric: tabular-nums;
+}
+
+.countdown__unit-label {
+  font-size: 0.62rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding-left: 0.16em;
+}
+
+.countdown__closed {
+  margin: 0;
+  color: var(--muted);
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 1.05rem;
+  line-height: 1.5;
+}
+
+.countdown--closed {
+  padding-bottom: 1.1rem;
+}
+
+.countdown--closed .countdown__closed {
+  color: var(--burgundy);
+}
+
 .rsvp__card {
   max-width: var(--content-width);
   margin: 0 auto;
@@ -856,6 +990,15 @@ svg {
   font-size: 0.98rem;
   font-style: italic;
   font-family: var(--font-display);
+}
+
+.footer__invitation {
+  margin: 1.25rem 0 0;
+  font-size: 0.72rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--burgundy);
+  padding-left: 0.28em;
 }
 
 /* ---------- Responsive ---------- */
