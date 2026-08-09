@@ -16,12 +16,11 @@ export default {
   // A highlighted notice near the top of the page. Set `announcement` to null
   // to hide this section entirely.
   announcement: {
-    label: 'Important Update',
-    title: 'A Little Change of Plans',
+    label: 'Important Update 🤍',
+    title: 'Our engagement ceremony venue has been changed.',
     paragraphs: [
-      'Due to some last-minute circumstances, we have had to change the venue for our engagement ceremony, just four days before the event.',
-      'We sincerely apologize for the short notice and any inconvenience this may cause. We’d be grateful if you could take a moment to confirm that you’ve received the updated venue details below.',
-      'Thank you so much for your understanding and for celebrating this special moment with us.',
+      'We sincerely apologize for the short notice. Please RSVP below to confirm that you’ve received the updated venue details.',
+      'Thank you for your understanding, and we can’t wait to celebrate with you!',
     ],
   },
 
@@ -41,7 +40,7 @@ export default {
   // See README.md: "Setting up the RSVP Google Form" for how to fill these in.
   rsvp: {
     // Short line shown under the RSVP heading. Set to '' to hide it.
-    intro: 'Please RSVP below to confirm that you’ve received the venue update.',
+    intro: '',
     // Ends in /formResponse (NOT /viewform).
     formActionUrl:
       'https://docs.google.com/forms/d/e/1FAIpQLSdS5wpuOmCKsQznnTLcLWut9vC7QlEfeC8dMo0sovNhAOxcbA/formResponse',
