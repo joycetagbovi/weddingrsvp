@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>You're Invited</title>
+    <meta
+      name="description"
+      content="Join us to celebrate our wedding. View the details, get directions, and RSVP."
+    />
+    <meta name="theme-color" content="#6b1d2a" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <!-- Hidden target so the RSVP form can POST to Google Forms without navigating away -->
+    <iframe name="hidden_iframe" title="RSVP submission" aria-hidden="true" tabindex="-1"></iframe>
+
+    <main id="app">
+      <!-- Hero -->
+      <header class="hero" id="hero">
+        <div class="hero__botanical" aria-hidden="true">
+          <svg viewBox="0 0 400 600" preserveAspectRatio="xMidYMid slice">
+            <g class="botanical-strokes">
+              <path d="M200 560 C200 420 90 400 90 280 C90 180 150 140 200 220 C250 140 310 180 310 280 C310 400 200 420 200 560 Z" />
+              <path d="M200 220 C200 160 150 110 200 60 C250 110 200 160 200 220 Z" />
+              <path d="M120 320 C70 330 40 380 30 450" />
+              <path d="M280 320 C330 330 360 380 370 450" />
+              <path d="M110 250 C60 240 35 200 40 150" />
+              <path d="M290 250 C340 240 365 200 360 150" />
+              <path d="M200 400 C170 380 150 340 160 300" />
+              <path d="M200 400 C230 380 250 340 240 300" />
+            </g>
+          </svg>
+        </div>
+        <div class="hero__content">
+          <p class="hero__tagline" data-tagline></p>
+          <h1 class="hero__names" data-couple>Joshua &amp; Seraphina</h1>
+          <span class="hero__rule" aria-hidden="true"></span>
+          <p class="hero__date" data-hero-date></p>
+          <a class="btn btn--primary hero__cta" href="#rsvp">RSVP</a>
+        </div>
+      </header>
+
+      <!-- Details -->
+      <section class="section details" id="details" aria-labelledby="details-title">
+        <p class="section__label">The Celebration</p>
+        <h2 class="section__title" id="details-title">When &amp; Where</h2>
+        <dl class="details__grid">
+          <div class="details__item">
+            <dt>Date</dt>
+            <dd data-date></dd>
+          </div>
+          <div class="details__item">
+            <dt>Time</dt>
+            <dd data-time></dd>
+          </div>
+          <div class="details__item">
+            <dt>Venue</dt>
+            <dd data-venue-name></dd>
+          </div>
+          <div class="details__item">
+            <dt>Address</dt>
+            <dd data-venue-address></dd>
+          </div>
+        </dl>
+      </section>
+
+      <!-- Location -->
+      <section class="section location" id="location" aria-labelledby="location-title">
+        <p class="section__label">Getting There</p>
+        <h2 class="section__title" id="location-title">Venue &amp; Directions</h2>
+        <p class="location__venue" data-venue-name></p>
+        <p class="location__address" data-venue-address></p>
+        <a
+          class="btn btn--primary"
+          data-directions
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Get Directions
+        </a>
+      </section>
+
+      <!-- RSVP -->
+      <section class="section rsvp" id="rsvp" aria-labelledby="rsvp-title">
+        <p class="section__label">Kindly Reply</p>
+        <h2 class="section__title" id="rsvp-title">RSVP</h2>
+
+        <form class="rsvp__form" id="rsvp-form" target="hidden_iframe" novalidate>
+          <fieldset class="rsvp__field">
+            <legend>Will you attend?</legend>
+            <div class="rsvp__choices">
+              <label class="choice">
+                <input type="radio" class="js-attendance" value="yes" required />
+                <span class="choice__label" data-attendance-yes>Yes, I'll attend</span>
+              </label>
+              <label class="choice">
+                <input type="radio" class="js-attendance" value="no" />
+                <span class="choice__label" data-attendance-no>No, I can't attend</span>
+              </label>
+            </div>
+          </fieldset>
+
+          <div class="rsvp__field">
+            <label for="guest-name">Your name</label>
+            <input type="text" id="guest-name" class="js-name" autocomplete="name" required />
+          </div>
+
+          <div class="rsvp__field" data-guest-count-field>
+            <label for="guest-count">Number of guests</label>
+            <input type="number" id="guest-count" class="js-guest-count" min="1" step="1" inputmode="numeric" />
+          </div>
+
+          <p class="rsvp__error" data-error role="alert" hidden></p>
+
+          <button type="submit" class="btn btn--primary rsvp__submit">Send RSVP</button>
+        </form>
+
+        <output class="rsvp__confirmation" data-confirmation hidden>
+          <span class="rsvp__confirmation-title">Thank you!</span>
+          <span class="rsvp__confirmation-text" data-confirmation-text></span>
+        </output>
+
+        <div class="rsvp__whatsapp" data-whatsapp-wrap hidden>
+          <p class="rsvp__whatsapp-or">or</p>
+          <a class="btn btn--whatsapp" data-whatsapp target="_blank" rel="noopener noreferrer">
+            Confirm on WhatsApp
+          </a>
+        </div>
+      </section>
+
+      <footer class="footer" id="footer">
+        <span class="footer__mark" aria-hidden="true">&#10047;</span>
+        <p class="footer__couple" data-couple></p>
+        <p class="footer__message" data-footer-message></p>
+      </footer>
+    </main>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
