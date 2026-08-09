@@ -22,11 +22,59 @@ function hydrateContent() {
   setText('[data-venue-address]', config.venueAddress);
   setText('[data-footer-message]', config.footerMessage || '');
 
-  setText('[data-attendance-yes]', config.rsvp.attendanceValues.yes);
-  setText('[data-attendance-no]', config.rsvp.attendanceValues.no);
+  setText('[data-attendance-yes]', config.rsvp.attendanceValues.yes.label);
+  setText('[data-attendance-no]', config.rsvp.attendanceValues.no.label);
 
   const directions = $('[data-directions]');
   if (directions) directions.href = config.googleMapsUrl;
+
+  const hero = $('#hero');
+  if (hero && config.heroImage) {
+    hero.style.setProperty('--hero-image', `url("${config.heroImage}")`);
+    hero.classList.add('hero--photo');
+  }
+
+  renderAnnouncement();
+  renderRsvpIntro();
+  renderMonogram();
+}
+
+function renderMonogram() {
+  const el = $('[data-monogram]');
+  if (!el) return;
+  const initials = (config.coupleNames || '')
+    .split(/&|\band\b|\+/i)
+    .map((part) => part.trim().charAt(0).toUpperCase())
+    .filter(Boolean);
+  if (initials.length) el.textContent = initials.join(' \u00b7 ');
+}
+
+function renderAnnouncement() {
+  const section = $('[data-announcement]');
+  const announcement = config.announcement;
+  if (!section || !announcement) return;
+
+  setText('[data-announcement-label]', announcement.label || '');
+  setText('[data-announcement-title]', announcement.title || '');
+
+  const body = $('[data-announcement-body]');
+  if (body) {
+    body.textContent = '';
+    (announcement.paragraphs || []).forEach((text) => {
+      const p = document.createElement('p');
+      p.textContent = text;
+      body.appendChild(p);
+    });
+  }
+  section.hidden = false;
+}
+
+function renderRsvpIntro() {
+  const intro = $('[data-rsvp-intro]');
+  const text = config.rsvp?.intro;
+  if (!intro || !text) return;
+  intro.textContent = text;
+  intro.hidden = false;
 }
 
 function setupWhatsApp() {
@@ -47,7 +95,6 @@ function setupRsvp() {
   const errorEl = $('[data-error]');
   const confirmation = $('[data-confirmation]');
   const confirmationText = $('[data-confirmation-text]');
-  const guestCountField = $('[data-guest-count-field]');
   const guestCountInput = $('.js-guest-count', form);
   const nameInput = $('.js-name', form);
   const attendanceRadios = $$('.js-attendance', form);
@@ -62,11 +109,12 @@ function setupRsvp() {
     radio.name = config.rsvp.entries.attendance;
     radio.dataset.formValue =
       radio.value === 'yes'
-        ? config.rsvp.attendanceValues.yes
-        : config.rsvp.attendanceValues.no;
+        ? config.rsvp.attendanceValues.yes.value
+        : config.rsvp.attendanceValues.no.value;
   });
 
   const yesRadio = attendanceRadios.find((r) => r.value === 'yes');
+  const noRadio = attendanceRadios.find((r) => r.value === 'no');
 
   const showError = (message) => {
     if (!errorEl) return;
@@ -77,16 +125,14 @@ function setupRsvp() {
     if (errorEl) errorEl.hidden = true;
   };
 
-  // The Google Form's "Guest" question is required, so the field must always be
-  // submitted. When attending we show it and ask for a real number; when
-  // declining we hide it and send 0 so the required field is still satisfied.
+  // The Guest field stays visible at all times. When attending we clear a
+  // placeholder 0 so guests enter a real number; when they decline we default it
+  // to 0 so the required Google Form field is still satisfied.
   const syncGuestCount = () => {
-    const attending = Boolean(yesRadio?.checked);
-    if (guestCountField) guestCountField.hidden = !attending;
     if (!guestCountInput) return;
-    if (attending) {
+    if (yesRadio?.checked) {
       if (guestCountInput.value === '0') guestCountInput.value = '';
-    } else {
+    } else if (noRadio?.checked) {
       guestCountInput.value = '0';
     }
   };
@@ -148,6 +194,37 @@ function setupRsvp() {
   });
 }
 
+function setupReveal() {
+  const els = $$('.reveal');
+  if (!els.length) return;
+
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduceMotion || !('IntersectionObserver' in window)) {
+    // Without motion (or observer support) just show everything immediately.
+    els.forEach((el) => el.classList.add('is-visible'));
+    return;
+  }
+
+  // Arm the hidden state only when JS + motion are available, so no-JS users
+  // always see content.
+  document.documentElement.classList.add('has-reveal');
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.12, rootMargin: '0px 0px -8% 0px' }
+  );
+
+  els.forEach((el) => observer.observe(el));
+}
+
 hydrateContent();
 setupWhatsApp();
 setupRsvp();
+setupReveal();
