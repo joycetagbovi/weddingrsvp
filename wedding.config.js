@@ -49,7 +49,6 @@ export default {
     entries: {
       name: 'entry.2043235207', // "Name" question
       attendance: 'entry.845648391', // "Attendance" question
-      guestCount: 'entry.720196882', // "Guest" question
     },
     // `label` is what guests see on the page. `value` is what gets recorded in
     // your Google Form and MUST match the option text in the form's attendance

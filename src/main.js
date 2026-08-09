@@ -95,7 +95,6 @@ function setupRsvp() {
   const errorEl = $('[data-error]');
   const confirmation = $('[data-confirmation]');
   const confirmationText = $('[data-confirmation-text]');
-  const guestCountInput = $('.js-guest-count', form);
   const nameInput = $('.js-name', form);
   const attendanceRadios = $$('.js-attendance', form);
   const submitBtn = $('.rsvp__submit', form);
@@ -104,7 +103,6 @@ function setupRsvp() {
   // is recorded in the linked Sheet.
   form.action = config.rsvp.formActionUrl;
   if (nameInput) nameInput.name = config.rsvp.entries.name;
-  if (guestCountInput) guestCountInput.name = config.rsvp.entries.guestCount;
   attendanceRadios.forEach((radio) => {
     radio.name = config.rsvp.entries.attendance;
     radio.dataset.formValue =
@@ -112,9 +110,6 @@ function setupRsvp() {
         ? config.rsvp.attendanceValues.yes.value
         : config.rsvp.attendanceValues.no.value;
   });
-
-  const yesRadio = attendanceRadios.find((r) => r.value === 'yes');
-  const noRadio = attendanceRadios.find((r) => r.value === 'no');
 
   const showError = (message) => {
     if (!errorEl) return;
@@ -125,25 +120,8 @@ function setupRsvp() {
     if (errorEl) errorEl.hidden = true;
   };
 
-  // The Guest field stays visible at all times. When attending we clear a
-  // placeholder 0 so guests enter a real number; when they decline we default it
-  // to 0 so the required Google Form field is still satisfied.
-  const syncGuestCount = () => {
-    if (!guestCountInput) return;
-    if (yesRadio?.checked) {
-      if (guestCountInput.value === '0') guestCountInput.value = '';
-    } else if (noRadio?.checked) {
-      guestCountInput.value = '0';
-    }
-  };
-
-  // Guest count only relevant when attending.
-  syncGuestCount();
   attendanceRadios.forEach((radio) => {
-    radio.addEventListener('change', () => {
-      clearError();
-      syncGuestCount();
-    });
+    radio.addEventListener('change', clearError);
   });
 
   form.addEventListener('submit', (event) => {
@@ -159,19 +137,6 @@ function setupRsvp() {
       showError('Please enter your name.');
       nameInput.focus();
       return;
-    }
-
-    if (selected.value === 'yes') {
-      const count = Number(guestCountInput?.value);
-      if (!guestCountInput?.value || !Number.isInteger(count) || count < 1) {
-        event.preventDefault();
-        showError('Please enter the number of guests (a whole number of at least 1).');
-        guestCountInput?.focus();
-        return;
-      }
-    } else if (guestCountInput) {
-      // Declining: send 0 for the required Guest field.
-      guestCountInput.value = '0';
     }
 
     // Rewrite radio values to the labels Google Forms expects, right before POST.
